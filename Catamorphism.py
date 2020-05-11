@@ -23,10 +23,6 @@ def sum_one_level(data):
     return data
 
 
-def histo(f, data):
-    history = []
-
-
 
 result = cata(sum_one_level, [[[1, 2], [3]], [4]])
 print(result)
