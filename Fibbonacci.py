@@ -112,10 +112,10 @@ def histomorphism(index: int, baseCases: list, consCase: Callable) -> int:
 
     # Setup memoization
     def memoize(func: Callable) -> Callable:
-        def get_cached(x, func2):
-            if x not in accumulator:
-                accumulator[x] = func(x, func2)
-            return accumulator[x]
+        def get_cached(index: int, func2: Callable) -> Callable:
+            if index not in accumulator:
+                accumulator[index] = func(index, func2)
+            return accumulator[index]
         return get_cached
 
 
