@@ -1,6 +1,7 @@
 from typing import Callable
 
 # Naive recursive version of fibbonacci numbers - This is exponential time
+# Example call: naiveFib(11) returns 89 because that's the 11th Fibbonacci number
 def naiveFib(index: int) -> int:
     if index < 0:
         raise Exception("The first fibbonacci index is 0.")
@@ -13,6 +14,7 @@ def naiveFib(index: int) -> int:
 
 
 # Dynamic Programming version of fibbonacci numbers - Linear time
+# Example call: dpFib(100) returns 354224848179261915075 because that's the 100th Fibbonacci number
 def dpFib(index: int) -> int:
     if index < 0:
         raise Exception("The first fibbonacci index is 0.")
@@ -28,6 +30,7 @@ def dpFib(index: int) -> int:
 
 
 # Memoized version of fibbonacci numbers - linear time
+# Example call: memFib(100) returns 354224848179261915075 because that's the 100th Fibbonacci number
 def memFib(index: int) -> int:
     memdict = {}
     memdict[0] = 0
@@ -67,12 +70,14 @@ def memoize(func: Callable) -> Callable:
         return cache[x]
     return get_cached
 
+
 # Test decorating naiveFib
 naiveFib = memoize(naiveFib)
 for i in range(1,100):
     assert naiveFib(i) == dpFib(i)
 
 # Using @ decorated version
+# Example call: fib(100) returns 354224848179261915075 because that's the 100th Fibbonacci number
 @memoize
 def fib(index: int) -> int:
     if index < 0:
@@ -100,6 +105,7 @@ for i in range(1,100):
 # Also note: I'm not sure what "cansCase" means. I'm just borrowing name from paper.
 # This function takes the index your interested in (i.e. the Xth Fibbonacci number), a list of base cases matched to indexes (i.e. case 0 and 1 for Fibbonacci numbers), and a function that calculates the results from the accumulator for the non-base cases. (i.e. "consCase" whatever that means)
 # It returns the result as an integer. In theory, this should be reusable doing other types of DP other than Fibbonacci numbers so long as they are using a simple list/vector as an accumulator. I haven't tried that yet.
+# Example call: Fibbonacci.histomorphism(100, [0,1], consFib) will return 354224848179261915075 because it's the 100th Fibbonnaci number. [0,1] are the two base cases (corresponding with accumluator index 0 and 1 positions. consFib is the function used to calculate Fibbonnaci numbers after the base cases.
 def histomorphism(index: int, baseCases: list, consCase: Callable) -> int:
     # Guarentee baseCase is always a list
     if not isinstance(baseCases, list):
