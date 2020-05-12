@@ -1,7 +1,7 @@
-import copy
+from typing import Callable
 
 # Naive recursive version of fibbonacci numbers - This is exponential time
-def naiveFib(index):
+def naiveFib(index: int) -> int:
     if index < 0:
         raise Exception("The first fibbonacci index is 0.")
     elif index == 0:
@@ -11,8 +11,9 @@ def naiveFib(index):
     else:
         return naiveFib(index-1) + naiveFib(index-2)
 
+
 # Dynamic Programming version of fibbonacci numbers - Linear time
-def dpFib(index):
+def dpFib(index: int) -> int:
     if index < 0:
         raise Exception("The first fibbonacci index is 0.")
 
@@ -27,12 +28,12 @@ def dpFib(index):
 
 
 # Memoized version of fibbonacci numbers - linear time
-def memFib(index):
+def memFib(index: int) -> int:
     memdict = {}
     memdict[0] = 0
     memdict[1] = 1
 
-    def memFibSub(index):
+    def memFibSub(index: int) -> int:
         if index in memdict:
             return memdict[index]
         else:
@@ -58,7 +59,7 @@ for i in range(1,100):
 
 
 # Create memoized decorator
-def memoize(func):
+def memoize(func: Callable) -> Callable:
     cache = {}
     def get_cached(x):
         if x not in cache:
@@ -73,7 +74,7 @@ for i in range(1,100):
 
 # Using @ decorated version
 @memoize
-def fib(index):
+def fib(index: int) -> int:
     if index < 0:
         raise Exception("The first fibbonacci index is 0.")
     elif index == 0:
@@ -90,11 +91,16 @@ for i in range(1,100):
 
 
 
+
+
+# **************************************************************************************************
 # First attempt at a catamorphism/histomorophism version (I'm still a bit unclear on the difference)
 # Bananna paper says: A histomorphism is a memoizing variant of a catamorphism, making all previously-computed values available.
 # So I think this is a histomorphism
 # Also note: I'm not sure what "cansCase" means. I'm just borrowing name from paper.
-def histomorphism(index, baseCases, consCase):
+# This function takes the index your interested in (i.e. the Xth Fibbonacci number), a list of base cases matched to indexes (i.e. case 0 and 1 for Fibbonacci numbers), and a function that calculates the results from the accumulator for the non-base cases. (i.e. "consCase" whatever that means)
+# It returns the result as an integer. In theory, this should be reusable doing other types of DP other than Fibbonacci numbers so long as they are using a simple list/vector as an accumulator. I haven't tried that yet.
+def histomorphism(index: int, baseCases: list, consCase: Callable) -> int:
     # Guarentee baseCase is always a list
     if not isinstance(baseCases, list):
         baseCases = [baseCases]
@@ -105,7 +111,7 @@ def histomorphism(index, baseCases, consCase):
         accumulator[i] = baseCases[i]
 
     # Setup memoization
-    def memoize(func):
+    def memoize(func: Callable) -> Callable:
         def get_cached(x, func2):
             if x not in accumulator:
                 accumulator[x] = func(x, func2)
@@ -117,7 +123,7 @@ def histomorphism(index, baseCases, consCase):
     return consCase(index, consCase)
 
 
-def consFib(index, func):
+def consFib(index: int, func: Callable) -> int:
     return func(index-2, func) + func(index-1, func)
 
 # Test histomorphism version
