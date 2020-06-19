@@ -62,7 +62,7 @@ def sumup(cons: IntList) -> int:
 
 
 # Converts a list of integers into an IntList (to get things off the ground)
-def mkIntList(lst: list) -> IntList:
+def mkIntList(lst: list[int]) -> IntList:
     l = len(lst)
     if l == 1:
         return IntList(lst[0], IntList(None, None))
