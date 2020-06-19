@@ -51,11 +51,6 @@ def sumConsCase(cons: IntList, acc: int) -> int:
     return cons.x + acc
 
 
-# length' :: IntList -> Int
-# length' lst = foldList lst 0 lenConsCase
-#
-# sum' :: IntList -> Int
-# sum' lst = foldList lst 0 sumConsCase
 
 # lenth and sumup functions
 def length(cons: IntList) -> int:
