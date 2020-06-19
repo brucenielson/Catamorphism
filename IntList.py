@@ -37,8 +37,6 @@ class IntList:
 # foldList (Cons xs) acc f = f (ConsType (consCaseHead xs) Nil) (foldList (consCaseTail xs) acc f)
 def foldList(cons: IntList, acc: int, consCase: Callable) -> int:
     if cons.x is None:
-        return 0
-    elif cons.xs is None:
         return acc
     else:
         param1 = IntList(cons.x, None)
@@ -58,13 +56,9 @@ def sumConsCase(cons: IntList, acc: int) -> int:
     return cons.x + acc
 
 def mkIntList(lst: list) -> IntList:
-    if lst is None:
-        return IntList(None, None)
     l = len(lst)
-    if l == 0:
-        return IntList(None, None)
-    elif l == 1:
-        return IntList(lst[0], None)
+    if l == 1:
+        return IntList(lst[0], IntList(None, None))
     else:
         x = lst[0]
         xs = lst[1:]
