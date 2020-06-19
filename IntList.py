@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import Callable
 
+# IntList Class
 class IntList:
     def __init__(self, x: int, xs: IntList):
         self.x = x
@@ -32,29 +33,40 @@ class IntList:
         return "x: " + str(x) + " - " + self.xs.__str__()
 
 
-# foldList :: IntList -> Int -> (ConsCase -> Int -> Int) -> Int
-# foldList Nil acc _ = acc
-# foldList (Cons xs) acc f = f (ConsType (consCaseHead xs) Nil) (foldList (consCaseTail xs) acc f)
+# foldList functions
 def foldList(cons: IntList, acc: int, consCase: Callable) -> int:
     if cons.x is None:
         return acc
     else:
         param1 = IntList(cons.x, None)
         param2 = foldList(cons.xs, acc, consCase)
-        print("param1: ", param1)
-        print("param2: ", param2)
+        # print("param1: ", param1)
+        # print("param2: ", param2)
         return consCase(param1, param2)
 
-# lenConsCase :: ConsCase -> Int -> Int
-# lenConsCase _ acc = 1 + acc
-# sumConsCase :: ConsCase -> Int -> Int
-# sumConsCase cons acc = consCaseHead cons + acc
 def lenConsCase(cons: IntList, acc: int) -> int:
     return 1 + acc
 
 def sumConsCase(cons: IntList, acc: int) -> int:
     return cons.x + acc
 
+
+# length' :: IntList -> Int
+# length' lst = foldList lst 0 lenConsCase
+#
+# sum' :: IntList -> Int
+# sum' lst = foldList lst 0 sumConsCase
+
+# lenth and sumup functions
+def length(cons: IntList) -> int:
+    return foldList(cons, 0, lenConsCase)
+
+def sumup(cons: IntList) -> int:
+    return foldList(cons, 0, sumConsCase)
+
+
+
+# Converts a list of integers into an IntList (to get things off the ground)
 def mkIntList(lst: list) -> IntList:
     l = len(lst)
     if l == 1:
@@ -64,5 +76,9 @@ def mkIntList(lst: list) -> IntList:
         xs = lst[1:]
         return IntList(x, mkIntList(xs))
 
-
+# My default test list
 lst = mkIntList([1,2,3])
+
+# Tests
+assert length(lst) == 3
+assert sumup(lst) == 6
