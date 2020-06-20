@@ -39,19 +39,20 @@ def mkNat(n: int) -> Nat:
 #         return 1 + getval(n.pred)
 
 
+# Test Nat classes
 n = mkNat(3)
 assert n.getVal() == 3
 z = mkNat(0)
 assert z.getVal() == 0
 
-# Now attempt to do this via a catamorphism
+# Create catamorphism
 def cataNat(n: Nat, zeroCase: T, succCase: Callable[[T], T] ) -> T:
     if type(n) == Zero:
         return zeroCase
     elif type(n) == Succ:
         return succCase(cataNat(n.pred, zeroCase, succCase))
 
-
+# Just a basic successor function -- the end result is that it just copies the Nat -- not very useful. I feel I'm missing something.
 def successor(n: Nat) -> Nat:
     return Succ(n)
 
@@ -60,6 +61,7 @@ n2 = cataNat(n, Zero(), successor)
 assert n2.getVal() == 3
 
 
+# My first attempt to work out how multiplication with Nat would work
 # Test cataNat doing some multiplication (this is more than a bit forced)
 def mult3(n: Nat) -> Nat:
     return mkNat(n.getVal() + 3)
