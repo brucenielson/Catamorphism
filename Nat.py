@@ -5,7 +5,15 @@ from typing import TypeVar
 T = TypeVar('T')
 
 class Nat:
-    pass
+    def __str__(self):
+        return str(self.getVal())
+
+    def getVal(self) -> int:
+        if type(self) == Zero:
+            return 0
+        else:
+            return 1 + self.pred.getVal()
+
 
 class Zero(Nat):
     pass
@@ -24,16 +32,17 @@ def mkNat(n: int) -> Nat:
         n -= 1
     return nat
 
-def getval(n: Nat) -> int:
-    if type(n) == Zero:
-        return 0
-    else:
-        return 1 + getval(n.pred)
+# def getval(n: Nat) -> int:
+#     if type(n) == Zero:
+#         return 0
+#     else:
+#         return 1 + getval(n.pred)
 
 
 n = mkNat(3)
-assert getval(n) == 3
-
+assert n.getVal() == 3
+z = mkNat(0)
+assert z.getVal() == 0
 
 # Now attempt to do this via a catamorphism
 def cataNat(n: Nat, zeroCase: T, succCase: Callable[[T], T] ) -> T:
@@ -42,9 +51,20 @@ def cataNat(n: Nat, zeroCase: T, succCase: Callable[[T], T] ) -> T:
     elif type(n) == Succ:
         return succCase(cataNat(n.pred, zeroCase, succCase))
 
+
 def successor(n: Nat) -> Nat:
     return Succ(n)
 
-# Test cataNat on n
+# Test cataNat on n using successor
 n2 = cataNat(n, Zero(), successor)
-assert getval(n2) == 3
+assert n2.getVal() == 3
+
+
+# Test cataNat doing some multiplication (this is more than a bit forced)
+def mult3(n: Nat) -> Nat:
+    return mkNat(n.getVal() + 3)
+
+# Test cataNat on n
+n2 = cataNat(n, Zero(), mult3)
+print(n2)
+assert n2.getVal() == 9
